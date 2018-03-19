@@ -1,0 +1,9 @@
+logging:
+  level: DEBUG
+  output: stdout
+database:
+  connection_string: "postgres://username:password@localhost/database"
+admin:
+  listen_address: ":8000"
+mailgun:
+  listen_address: ":8001"
