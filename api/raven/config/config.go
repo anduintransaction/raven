@@ -23,6 +23,8 @@ type LoggingConfig struct {
 
 // DatabaseConfig .
 type DatabaseConfig struct {
+	Driver           string `yaml:"driver"`
+	ConnectionString string `yaml:"connection_string"`
 }
 
 // AdminAPIServerConfig .

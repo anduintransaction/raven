@@ -9,7 +9,12 @@ import (
 // NewAPIServer .
 func NewAPIServer(config *config.MailgunAPIServerConfig) servers.Server {
 	r := mux.NewRouter()
+
 	home := &HomeHandler{}
 	r.Path("/").HandlerFunc(home.Home)
+
+	v3 := r.PathPrefix("/v3").Subrouter()
+	messages := &MessageHandler{}
+	v3.Methods("POST").Path("/{domain}/messages").HandlerFunc(messages.Send)
 	return servers.NewHTTPServer(config.ListenAddress, r)
 }

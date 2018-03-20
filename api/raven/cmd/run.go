@@ -22,6 +22,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/anduintransaction/raven/api/raven/admin"
 	"github.com/anduintransaction/raven/api/raven/config"
+	"github.com/anduintransaction/raven/api/raven/database"
 	"github.com/anduintransaction/raven/api/raven/mailgun"
 	"github.com/anduintransaction/raven/api/raven/servers"
 	"github.com/spf13/cobra"
@@ -40,7 +41,9 @@ var runCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		setupLogger(config.Logging)
+		connectDatabase(config.Database)
 		startServers(config)
+		database.Close()
 	},
 }
 
@@ -74,6 +77,14 @@ func setupLogger(loggingConfig *config.LoggingConfig) {
 			os.Exit(1)
 		}
 		logrus.SetOutput(output)
+	}
+}
+
+func connectDatabase(databaseConfig *config.DatabaseConfig) {
+	err := database.Connect(databaseConfig)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }
 

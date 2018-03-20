@@ -19,3 +19,18 @@ func ResponseJSON(w http.ResponseWriter, statusCode int, value interface{}) erro
 	fmt.Fprint(w, string(encoded))
 	return nil
 }
+
+// ResponseError .
+func ResponseError(w http.ResponseWriter, statusCode int, message string) error {
+	err := struct {
+		Message string `json:"message"`
+	}{
+		Message: message,
+	}
+	return ResponseJSON(w, statusCode, err)
+}
+
+// ResponseServerError .
+func ResponseServerError(w http.ResponseWriter) error {
+	return ResponseError(w, http.StatusInternalServerError, "Internal Server Error")
+}
