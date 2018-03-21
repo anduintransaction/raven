@@ -1,6 +1,8 @@
 package database
 
 import (
+	"time"
+
 	"github.com/anduintransaction/raven/api/raven/config"
 	"github.com/anduintransaction/raven/api/raven/model"
 	"github.com/jinzhu/gorm"
@@ -13,10 +15,19 @@ import (
 
 // InitDB .
 func InitDB(config *config.DatabaseConfig) error {
-	db, err := gorm.Open(config.Driver, config.ConnectionString)
+	var db *gorm.DB
+	var err error
+	maxRetry := 10
+	for i := 0; i < maxRetry; i++ {
+		db, err = gorm.Open(config.Driver, config.ConnectionString)
+		if err == nil {
+			break
+		}
+		time.Sleep(3 * time.Second)
+	}
 	if err != nil {
 		return stacktrace.Propagate(err, "cannot connect to database")
 	}
 	defer db.Close()
-	return stacktrace.Propagate(db.AutoMigrate(&model.Email{}, &model.Attachment{}).Error, "cannot migrate database")
+	return stacktrace.Propagate(db.AutoMigrate(&model.Message{}, &model.Email{}, &model.Attachment{}, &model.AttachmentData{}).Error, "cannot migrate database")
 }

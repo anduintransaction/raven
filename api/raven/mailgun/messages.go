@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/Sirupsen/logrus"
+	"github.com/anduintransaction/raven/api/raven/database"
 	"github.com/anduintransaction/raven/api/raven/model"
 	"github.com/anduintransaction/raven/api/raven/utils"
 	"github.com/palantir/stacktrace"
@@ -46,30 +47,57 @@ func (h *MessageHandler) Send(w http.ResponseWriter, r *http.Request) {
 		utils.ResponseError(w, http.StatusBadRequest, "Invalid content type")
 		return
 	}
-	fmt.Println(values.Get("to"))
-	fmt.Println(files)
+	emails, err := h.parseEmail(values, files)
+	if err != nil {
+		logrus.Error(err)
+		utils.ResponseServerError(w)
+		return
+	}
+	if len(emails) == 0 {
+		utils.ResponseError(w, http.StatusBadRequest, "No email submitted")
+		return
+	}
+	message := &model.Message{}
+	database.Connection.NewRecord(message)
+	err = database.Connection.Create(message).Error
+	if err != nil {
+		logrus.Error(stacktrace.Propagate(err, "cannot create email"))
+		utils.ResponseServerError(w)
+		return
+	}
+	for _, email := range emails {
+		email.MessageID = message.ID
+		database.Connection.NewRecord(email)
+		err = database.Connection.Create(email).Error
+		if err != nil {
+			logrus.Error(stacktrace.Propagate(err, "cannot create email"))
+			utils.ResponseServerError(w)
+			return
+		}
+		logrus.Infof("Email created: %d", email.ID)
+	}
 
 	response := &struct {
 		ID      string `json:"id"`
 		Message string `json:"message"`
 	}{
-		ID:      "ahihi",
-		Message: "ahuhu",
+		ID:      fmt.Sprint(message.ID),
+		Message: "Success",
 	}
-	err := utils.ResponseJSON(w, http.StatusOK, response)
+	err = utils.ResponseJSON(w, http.StatusOK, response)
 	if err != nil {
 		logrus.Error(err)
 	}
 }
 
-func (h *MessageHandler) parseEmail(formValues url.Values, files map[string][]*multipart.FileHeader) ([]*model.Email, []*model.Attachment, error) {
+func (h *MessageHandler) parseEmail(formValues url.Values, files map[string][]*multipart.FileHeader) ([]*model.Email, error) {
 	fromAddress, err := mail.ParseAddress(formValues.Get("from"))
 	if err != nil {
-		return nil, nil, stacktrace.Propagate(err, "cannot parse from address %q", formValues.Get("from"))
+		return nil, stacktrace.Propagate(err, "cannot parse from address %q", formValues.Get("from"))
 	}
 	rcptAddresses, err := mail.ParseAddressList(formValues.Get("to"))
 	if err != nil {
-		return nil, nil, stacktrace.Propagate(err, "cannot parse rcpt address %q", formValues.Get("to"))
+		return nil, stacktrace.Propagate(err, "cannot parse rcpt address %q", formValues.Get("to"))
 	}
 	replyTo := formValues.Get("h:Reply-To")
 	subject := formValues.Get("subject")
@@ -78,34 +106,37 @@ func (h *MessageHandler) parseEmail(formValues url.Values, files map[string][]*m
 	for _, attachmentHeader := range files["attachment"] {
 		f, err := attachmentHeader.Open()
 		if err != nil {
-			return nil, nil, stacktrace.Propagate(err, "cannot open attachment %q", attachmentHeader.Filename)
+			return nil, stacktrace.Propagate(err, "cannot open attachment %q", attachmentHeader.Filename)
 		}
 		defer f.Close()
 		attachmentContent, err := ioutil.ReadAll(f)
 		if err != nil {
-			return nil, nil, stacktrace.Propagate(err, "cannot read attachment %q", attachmentHeader.Filename)
+			return nil, stacktrace.Propagate(err, "cannot read attachment %q", attachmentHeader.Filename)
 		}
 		attachment := &model.Attachment{
 			Filename: attachmentHeader.Filename,
 			Filemime: attachmentHeader.Header.Get("Content-Type"),
 			Filesize: attachmentHeader.Size,
-			Content:  attachmentContent,
+			AttachmentData: &model.AttachmentData{
+				Content: attachmentContent,
+			},
 		}
 		attachments = append(attachments, attachment)
 	}
 	emails := []*model.Email{}
 	for _, rcptAddress := range rcptAddresses {
 		email := &model.Email{
-			From:     fromAddress.Address,
-			FromName: fromAddress.Name,
-			To:       rcptAddress.Address,
-			ToName:   rcptAddress.Name,
-			RCPT:     formValues.Get("to"),
-			ReplyTo:  replyTo,
-			Subject:  subject,
-			HTML:     htmlContent,
+			FromEmail:   fromAddress.Address,
+			FromName:    fromAddress.Name,
+			ToEmail:     rcptAddress.Address,
+			ToName:      rcptAddress.Name,
+			RCPT:        formValues.Get("to"),
+			ReplyTo:     replyTo,
+			Subject:     subject,
+			HTML:        htmlContent,
+			Attachments: attachments,
 		}
 		emails = append(emails, email)
 	}
-	return emails, attachments, nil
+	return emails, nil
 }

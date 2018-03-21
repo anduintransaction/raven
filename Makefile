@@ -1,6 +1,6 @@
 API=api/raven
 RAVEN=api/raven/raven
-LOCAL_CONFIG=local/local.conf
+LOCAL_CONFIG=local/local.yml
 
 all: build
 
