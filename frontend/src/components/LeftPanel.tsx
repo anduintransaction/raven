@@ -3,14 +3,18 @@ import FilterBox from './FilterBox';
 import EmailList from './EmailList';
 import { MessageQuery, MessagesResponse } from '../models/Messages';
 
+interface LeftPanelProps {
+    onEmailItemClick?: (emailID: number) => void;
+}
+
 interface LeftPanelState {
     query: MessageQuery;
     response: MessagesResponse;
 }
 
-class LeftPanel extends React.Component<{}, LeftPanelState> {
+class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
 
-    constructor(props: {}) {
+    constructor(props: LeftPanelProps) {
         super(props);
         this.state = {
             query: {
@@ -32,7 +36,7 @@ class LeftPanel extends React.Component<{}, LeftPanelState> {
         return (
             <div className="br b--black-30">
                 <FilterBox query={this.state.query} count={this.state.response.Count} />
-                <EmailList emails={this.state.response.Emails} />
+                <EmailList emails={this.state.response.Emails} onEmailItemClick={this.props.onEmailItemClick} />
             </div>
         );
     }
