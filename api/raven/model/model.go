@@ -10,17 +10,24 @@ type Message struct {
 // Email .
 type Email struct {
 	gorm.Model
-	MessageID   uint `gorm:"column:message_id;INDEX"`
-	Message     *Message
-	FromEmail   string        `gorm:"column:from_email;type:varchar(255);INDEX"`
-	FromName    string        `gorm:"column:from_name;type:varchar(255);INDEX"`
-	ToEmail     string        `gorm:"column:to_email;type:varchar(255);INDEX"`
-	ToName      string        `gorm:"column:to_name;type:varchar(255);INDEX"`
-	RCPT        string        `gorm:"column:rcpt;type:text"`
-	ReplyTo     string        `gorm:"column:reply_to"`
-	Subject     string        `gorm:"column:subject;type:text;INDEX"`
-	HTML        string        `gorm:"column:html;type:text"`
-	Attachments []*Attachment `gorm:"many2many:email_attachments"`
+	MessageID      uint `gorm:"column:message_id;INDEX"`
+	Message        *Message
+	FromEmail      string `gorm:"column:from_email;type:varchar(255);INDEX"`
+	FromName       string `gorm:"column:from_name;type:varchar(255);INDEX"`
+	ToEmail        string `gorm:"column:to_email;type:varchar(255);INDEX"`
+	ToName         string `gorm:"column:to_name;type:varchar(255);INDEX"`
+	RCPT           string `gorm:"column:rcpt;type:text"`
+	ReplyTo        string `gorm:"column:reply_to"`
+	Subject        string `gorm:"column:subject;type:text;INDEX"`
+	EmailContent   *EmailContent
+	EmailContentID uint
+	Attachments    []*Attachment `gorm:"many2many:email_attachments"`
+}
+
+// EmailContent .
+type EmailContent struct {
+	gorm.Model
+	HTML string `gorm:"column:html;type:text"`
 }
 
 // Attachment .

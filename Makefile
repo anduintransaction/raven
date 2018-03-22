@@ -13,6 +13,9 @@ dep: .dep-api
 run-api: build
 	$(RAVEN) run $(LOCAL_CONFIG)
 
+run-frontend:
+	cd frontend && yarn start
+
 docker-build: build
 	doriath -x ravenTag=`$(RAVEN) version` build
 

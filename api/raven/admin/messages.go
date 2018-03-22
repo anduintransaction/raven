@@ -30,15 +30,12 @@ func (h *MessageHandler) View(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var email model.Email
-	err = database.Connection.Where("id = ?", id).First(&email).Error
+	err = database.Connection.Where("id = ?", id).Preload("EmailContent").Preload("Attachments").First(&email).Error
 	if err != nil {
 		logrus.Error(stacktrace.Propagate(err, "cannot query email"))
 		utils.ResponseServerError(w)
 		return
 	}
-	var attachments []*model.Attachment
-	database.Connection.Model(&email).Association("Attachments").Find(&attachments)
-	email.Attachments = attachments
 	err = utils.ResponseJSON(w, http.StatusOK, email)
 	if err != nil {
 		logrus.Error(err)

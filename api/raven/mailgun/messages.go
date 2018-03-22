@@ -126,14 +126,16 @@ func (h *MessageHandler) parseEmail(formValues url.Values, files map[string][]*m
 	emails := []*model.Email{}
 	for _, rcptAddress := range rcptAddresses {
 		email := &model.Email{
-			FromEmail:   fromAddress.Address,
-			FromName:    fromAddress.Name,
-			ToEmail:     rcptAddress.Address,
-			ToName:      rcptAddress.Name,
-			RCPT:        formValues.Get("to"),
-			ReplyTo:     replyTo,
-			Subject:     subject,
-			HTML:        htmlContent,
+			FromEmail: fromAddress.Address,
+			FromName:  fromAddress.Name,
+			ToEmail:   rcptAddress.Address,
+			ToName:    rcptAddress.Name,
+			RCPT:      formValues.Get("to"),
+			ReplyTo:   replyTo,
+			Subject:   subject,
+			EmailContent: &model.EmailContent{
+				HTML: htmlContent,
+			},
 			Attachments: attachments,
 		}
 		emails = append(emails, email)

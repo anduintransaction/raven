@@ -29,5 +29,5 @@ func InitDB(config *config.DatabaseConfig) error {
 		return stacktrace.Propagate(err, "cannot connect to database")
 	}
 	defer db.Close()
-	return stacktrace.Propagate(db.AutoMigrate(&model.Message{}, &model.Email{}, &model.Attachment{}, &model.AttachmentData{}).Error, "cannot migrate database")
+	return stacktrace.Propagate(db.AutoMigrate(&model.Message{}, &model.Email{}, &model.EmailContent{}, &model.Attachment{}, &model.AttachmentData{}).Error, "cannot migrate database")
 }

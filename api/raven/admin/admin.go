@@ -9,9 +9,10 @@ import (
 // NewAPIServer .
 func NewAPIServer(config *config.AdminAPIServerConfig) servers.Server {
 	r := mux.NewRouter()
+	apiSubroute := r.PathPrefix("/api").Subrouter()
 
 	messageHandler := &MessageHandler{}
-	messageSubroute := r.PathPrefix("/message").Subrouter()
+	messageSubroute := apiSubroute.PathPrefix("/message").Subrouter()
 	messageSubroute.Path("/{id}").HandlerFunc(messageHandler.View)
 	messageSubroute.Path("").HandlerFunc(messageHandler.Messages)
 
