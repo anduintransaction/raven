@@ -16,5 +16,9 @@ func NewAPIServer(config *config.AdminAPIServerConfig) servers.Server {
 	messageSubroute.Path("/{id}").HandlerFunc(messageHandler.View)
 	messageSubroute.Path("").HandlerFunc(messageHandler.Messages)
 
+	attachmentHandler := &AttachmentHandler{}
+	attachmentSubroute := apiSubroute.PathPrefix("/attachment").Subrouter()
+	attachmentSubroute.Path("/{id}/download").HandlerFunc(attachmentHandler.Download)
+
 	return servers.NewHTTPServer(config.ListenAddress, r)
 }

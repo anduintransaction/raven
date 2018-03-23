@@ -2,7 +2,11 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000",
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8000"
+    }
+  },
   "dependencies": {
     "@types/classnames": "^2.2.3",
     "@types/moment": "^2.13.0",

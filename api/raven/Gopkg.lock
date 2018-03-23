@@ -2,10 +2,22 @@
 
 
 [[projects]]
+  name = "github.com/PuerkitoBio/goquery"
+  packages = ["."]
+  revision = "09540e565986583836b5fc792fe951ec5fd201dd"
+  version = "v1.3.0"
+
+[[projects]]
   name = "github.com/Sirupsen/logrus"
   packages = ["."]
   revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
   version = "v1.0.5"
+
+[[projects]]
+  name = "github.com/andybalholm/cascadia"
+  packages = ["."]
+  revision = "901648c87902174f774fac311d7f176f8647bdaa"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/go-sql-driver/mysql"
@@ -75,6 +87,12 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/net"
+  packages = ["html","html/atom"]
+  revision = "6078986fec03a1dcc236c34816c71b0e05018fda"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix","windows"]
   revision = "01acb38716e021ed1fc03a602bdb5838e1358c5e"
@@ -88,6 +106,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "27381c7e89441d9b297050697bf65a3350a48e7915825fc846d8449396c592bb"
+  inputs-digest = "9d392a1e91fbde66acf1ee8f1a52cd9e173f395c2c7e8c37b5e27573060d4459"
   solver-name = "gps-cdcl"
   solver-version = 1

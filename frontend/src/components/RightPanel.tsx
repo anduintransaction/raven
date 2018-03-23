@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import { FaEnvelope, FaUser } from 'react-icons/lib/fa';
+import * as classnames from 'classnames';
 import Email from '../models/Email';
 
 interface RightPanelProps {
@@ -42,6 +43,33 @@ class RightPanel extends React.Component<RightPanelProps, RightPanelState> {
                 </div>
             );
         } else {
+            let attachmentContent: JSX.Element;
+            if (email.Attachments == null || email.Attachments.length === 0) {
+                attachmentContent = (
+                    <div />
+                );
+            } else {
+                let attachments = email.Attachments;
+                let attachmentList = attachments.map((attachment, index) => {
+                    let classes = classnames('pa2', {
+                        'bb b--black-10': (index < attachments.length - 1)
+                    });
+                    return (
+                        <li key={attachment.ID} className={classes}>
+                            <a className="link blue dim" href={`/api/attachment/${attachment.ID}/download`}>
+                                {attachment.Filename}
+                            </a>
+                        </li>
+                    );
+                });
+                attachmentContent = (
+                    <div className="bg-light-gray">
+                        <ul className="list pa0 ma0 f7">
+                            {attachmentList}
+                        </ul>
+                    </div>
+                );
+            }
             content = (
                 <div className="pv3 ph4">
                     <h2 className="bb black-70 b--black-10 pb3">{email.Subject}</h2>
@@ -60,7 +88,8 @@ class RightPanel extends React.Component<RightPanelProps, RightPanelState> {
                             {moment(email.CreatedAt).calendar()} ({moment(email.CreatedAt).fromNow()})
                         </div>
                     </div>
-                    <div dangerouslySetInnerHTML={{ __html: email.EmailContent.HTML }} />
+                    <div className="cf pv4" dangerouslySetInnerHTML={{ __html: email.EmailContent.HTML }} />
+                    {attachmentContent}
                 </div>
             );
         }

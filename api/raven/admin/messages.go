@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -8,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/PuerkitoBio/goquery"
 	"github.com/Sirupsen/logrus"
 	"github.com/anduintransaction/raven/api/raven/database"
 	"github.com/anduintransaction/raven/api/raven/model"
@@ -36,6 +38,13 @@ func (h *MessageHandler) View(w http.ResponseWriter, r *http.Request) {
 		utils.ResponseServerError(w)
 		return
 	}
+	cleanedHTML, err := h.cleanHTML(email.EmailContent.HTML)
+	if err != nil {
+		logrus.Error(err)
+		utils.ResponseServerError(w)
+		return
+	}
+	email.EmailContent.HTML = cleanedHTML
 	err = utils.ResponseJSON(w, http.StatusOK, email)
 	if err != nil {
 		logrus.Error(err)
@@ -96,6 +105,18 @@ func (h *MessageHandler) Messages(w http.ResponseWriter, r *http.Request) {
 		Count:  count,
 		Emails: emails,
 	})
+}
+
+func (h *MessageHandler) cleanHTML(content string) (string, error) {
+	document, err := goquery.NewDocumentFromReader(bytes.NewBuffer([]byte(content)))
+	if err != nil {
+		return "", stacktrace.Propagate(err, "cannot parse email content")
+	}
+	bodyContent, err := document.Find("body").Html()
+	if err != nil {
+		return "", stacktrace.Propagate(err, "cannot extract HTML body")
+	}
+	return bodyContent, nil
 }
 
 func (h *MessageHandler) buildQueryFilter(db *gorm.DB, messageQuery *MessageQuery) *gorm.DB {
