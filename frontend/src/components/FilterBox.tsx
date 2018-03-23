@@ -9,6 +9,9 @@ import { MessageQuery } from '../models/Messages';
 interface FilterBoxProps {
     query: MessageQuery;
     count: number;
+    onSearchBoxSubmit?: (search: string) => void;
+    onSortButtonClick?: (direction: string) => void;
+    onClearButtonClick?: () => void;
 }
 
 interface FilterBoxState {
@@ -19,7 +22,7 @@ class FilterBox extends React.Component<FilterBoxProps, FilterBoxState> {
 
     constructor(props: FilterBoxProps) {
         super(props);
-        this.state = { hideFilterPanel: true };
+        this.state = { hideFilterPanel: false };
     }
 
     handleFilterClick = () => {
@@ -32,13 +35,22 @@ class FilterBox extends React.Component<FilterBoxProps, FilterBoxState> {
         let classes = classNames('cl w-100', {
             'dn': this.state.hideFilterPanel
         });
+        let sortDirection = 'DESC';
+        this.props.query.Sorts.map((sorter) => {
+            sortDirection = sorter.Direction;
+        });
         return (
             <div className="bb b--black-30 cf">
                 <div className="fl w-40 pa3">
-                    <SearchBox />
+                    <SearchBox onSubmit={this.props.onSearchBoxSubmit} search={this.props.query.Search} />
                 </div>
                 <div className="fl w-20 pa3 pl0">
-                    <ToolBox onFilterClick={this.handleFilterClick} />
+                    <ToolBox
+                        sortDirection={sortDirection}
+                        onSortClick={this.props.onSortButtonClick}
+                        onFilterClick={this.handleFilterClick}
+                        onClearClick={this.props.onClearButtonClick}
+                    />
                 </div>
                 <div className="fl w-40 pa3 pl0">
                     <PaginationBox page={this.props.query.Page} itemsPerPage={this.props.query.ItemsPerPage} count={this.props.count} />

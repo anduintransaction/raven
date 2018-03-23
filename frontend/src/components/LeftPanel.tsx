@@ -14,18 +14,20 @@ interface LeftPanelState {
 
 class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
 
+    initialState: LeftPanelState = {
+        query: {
+            Filter: { From: '', To: '' },
+            Search: '',
+            Sorts: [{ Field: 'created_at', Direction: 'DESC' }],
+            Page: 1,
+            ItemsPerPage: 10
+        },
+        response: { Count: 0, Emails: [] }
+    };
+
     constructor(props: LeftPanelProps) {
         super(props);
-        this.state = {
-            query: {
-                Filter: { From: '', To: '' },
-                Search: '',
-                Sorts: [{ Field: 'created_at', Direction: 'DESC' }],
-                Page: 1,
-                ItemsPerPage: 10
-            },
-            response: { Count: 0, Emails: [] }
-        };
+        this.state = JSON.parse(JSON.stringify(this.initialState));
     }
 
     componentDidMount() {
@@ -35,10 +37,40 @@ class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
     render() {
         return (
             <div className="br b--black-30">
-                <FilterBox query={this.state.query} count={this.state.response.Count} />
+                <FilterBox
+                    query={this.state.query}
+                    count={this.state.response.Count}
+                    onSearchBoxSubmit={this.onSearchBoxSubmit}
+                    onSortButtonClick={this.onSortButtonClick}
+                    onClearButtonClick={this.onClearButtonClick}
+                />
                 <EmailList emails={this.state.response.Emails} onEmailItemClick={this.props.onEmailItemClick} />
             </div>
         );
+    }
+
+    onSearchBoxSubmit = (search: string) => {
+        this.setState(
+            (prevState: LeftPanelState, prevProp: LeftPanelProps) => {
+                prevState.query.Search = search;
+                return { query: prevState.query };
+            },
+            this.fetch
+        );
+    }
+
+    onSortButtonClick = (direction: string) => {
+        this.setState(
+            (prevState, prevProp) => {
+                prevState.query.Sorts = [{ Field: 'created_at', Direction: direction }];
+                return prevState;
+            },
+            this.fetch
+        );
+    }
+
+    onClearButtonClick = () => {
+        this.setState(this.initialState, this.fetch);
     }
 
     fetch = () => {
