@@ -6,6 +6,8 @@ interface PaginationBoxProps {
     page: number;
     itemsPerPage: number;
     count: number;
+    onPreviousClick?: () => void;
+    onNextClick?: () => void;
 }
 
 class PaginationBox extends React.Component<PaginationBoxProps> {
@@ -20,12 +22,13 @@ class PaginationBox extends React.Component<PaginationBoxProps> {
         if (end > this.props.count) {
             end = this.props.count;
         }
+        let maxPage = Math.ceil(this.props.count / this.props.itemsPerPage);
         return (
             <div>
-                <IconButton text="Previous">
+                <IconButton text="Previous" disabled={this.props.page <= 1} onClick={this.props.onPreviousClick}>
                     <FaChevronLeft />
                 </IconButton>
-                <IconButton text="Previous">
+                <IconButton text="Next" disabled={this.props.page >= maxPage} onClick={this.props.onNextClick}>
                     <FaChevronRight />
                 </IconButton>
                 <span className="ml3 f6">

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { FaSortAmountAsc, FaSortAmountDesc, FaFilter, FaRefresh } from 'react-icons/lib/fa';
+import { FaSortAmountAsc, FaSortAmountDesc, FaRefresh } from 'react-icons/lib/fa';
 import { TiTimes } from 'react-icons/lib/ti';
 import IconButton from './IconButton';
 
 export interface ToolBoxProps {
     sortDirection: string;
     onSortClick?: (direction: string) => void;
-    onFilterClick?: () => void;
+    onRefreshClick?: () => void;
     onClearClick?: () => void;
 }
 
@@ -30,10 +30,7 @@ class ToolBox extends React.Component<ToolBoxProps, ToolBoxState> {
                 <IconButton text="Sort" onClick={this.onSortButtonClick}>
                     {sortButton}
                 </IconButton>
-                <IconButton text="Filter" onClick={this.props.onFilterClick}>
-                    <FaFilter />
-                </IconButton>
-                <IconButton text="Refresh">
+                <IconButton text="Refresh" onClick={this.props.onRefreshClick}>
                     <FaRefresh />
                 </IconButton>
                 <IconButton text="Clear" onClick={this.props.onClearClick}>

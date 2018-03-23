@@ -1,9 +1,7 @@
 import * as React from 'react';
 import SearchBox from './SearchBox';
 import ToolBox from './ToolBox';
-import FilterPanel from './FilterPanel';
 import PaginationBox from './PaginationBox';
-import * as classNames from 'classnames';
 import { MessageQuery } from '../models/Messages';
 
 interface FilterBoxProps {
@@ -11,7 +9,10 @@ interface FilterBoxProps {
     count: number;
     onSearchBoxSubmit?: (search: string) => void;
     onSortButtonClick?: (direction: string) => void;
+    onRefreshButtonClick?: () => void;
     onClearButtonClick?: () => void;
+    onPreviousButtonClick?: () => void;
+    onNextButtonClick?: () => void;
 }
 
 interface FilterBoxState {
@@ -32,9 +33,6 @@ class FilterBox extends React.Component<FilterBoxProps, FilterBoxState> {
     }
 
     render() {
-        let classes = classNames('cl w-100', {
-            'dn': this.state.hideFilterPanel
-        });
         let sortDirection = 'DESC';
         this.props.query.Sorts.map((sorter) => {
             sortDirection = sorter.Direction;
@@ -48,15 +46,18 @@ class FilterBox extends React.Component<FilterBoxProps, FilterBoxState> {
                     <ToolBox
                         sortDirection={sortDirection}
                         onSortClick={this.props.onSortButtonClick}
-                        onFilterClick={this.handleFilterClick}
+                        onRefreshClick={this.props.onRefreshButtonClick}
                         onClearClick={this.props.onClearButtonClick}
                     />
                 </div>
                 <div className="fl w-40 pa3 pl0">
-                    <PaginationBox page={this.props.query.Page} itemsPerPage={this.props.query.ItemsPerPage} count={this.props.count} />
-                </div>
-                <div className={classes}>
-                    <FilterPanel />
+                    <PaginationBox
+                        page={this.props.query.Page}
+                        itemsPerPage={this.props.query.ItemsPerPage}
+                        count={this.props.count}
+                        onPreviousClick={this.props.onPreviousButtonClick}
+                        onNextClick={this.props.onNextButtonClick}
+                    />
                 </div>
             </div>
         );

@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -53,24 +52,11 @@ func (h *MessageHandler) View(w http.ResponseWriter, r *http.Request) {
 
 // Messages .
 func (h *MessageHandler) Messages(w http.ResponseWriter, r *http.Request) {
-	contentType := r.Header.Get("Content-Type")
-	var query []byte
-	var err error
-	if contentType == "application/json" {
-		query, err = ioutil.ReadAll(r.Body)
-		if err != nil {
-			logrus.Error(stacktrace.Propagate(err, "cannot parse form"))
-			utils.ResponseServerError(w)
-			return
-		}
-	} else {
-		err := r.ParseForm()
-		if err != nil {
-			logrus.Error(stacktrace.Propagate(err, "cannot parse form"))
-			utils.ResponseServerError(w)
-			return
-		}
-		query = []byte(r.Form.Get("query"))
+	query, err := getQuery(r)
+	if err != nil {
+		logrus.Error(err)
+		utils.ResponseServerError(w)
+		return
 	}
 	messageQuery := &MessageQuery{
 		Page:         1,

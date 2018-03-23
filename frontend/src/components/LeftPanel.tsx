@@ -42,7 +42,10 @@ class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
                     count={this.state.response.Count}
                     onSearchBoxSubmit={this.onSearchBoxSubmit}
                     onSortButtonClick={this.onSortButtonClick}
+                    onRefreshButtonClick={this.fetch}
                     onClearButtonClick={this.onClearButtonClick}
+                    onPreviousButtonClick={this.onPreviousButtonClick}
+                    onNextButtonClick={this.onNextButtonClick}
                 />
                 <EmailList emails={this.state.response.Emails} onEmailItemClick={this.props.onEmailItemClick} />
             </div>
@@ -52,8 +55,9 @@ class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
     onSearchBoxSubmit = (search: string) => {
         this.setState(
             (prevState: LeftPanelState, prevProp: LeftPanelProps) => {
-                prevState.query.Search = search;
-                return { query: prevState.query };
+                let newState = JSON.parse(JSON.stringify(prevState));
+                newState.query.Search = search;
+                return newState;
             },
             this.fetch
         );
@@ -62,15 +66,43 @@ class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
     onSortButtonClick = (direction: string) => {
         this.setState(
             (prevState, prevProp) => {
-                prevState.query.Sorts = [{ Field: 'created_at', Direction: direction }];
-                return prevState;
+                let newState = JSON.parse(JSON.stringify(prevState));
+                newState.query.Sorts = [{ Field: 'created_at', Direction: direction }];
+                return newState;
             },
             this.fetch
         );
     }
 
     onClearButtonClick = () => {
-        this.setState(this.initialState, this.fetch);
+        this.setState(JSON.parse(JSON.stringify(this.initialState)), this.fetch);
+    }
+
+    onPreviousButtonClick = () => {
+        this.setState(
+            (prevState, prevProps) => {
+                let newState = JSON.parse(JSON.stringify(prevState));
+                if (newState.query.Page > 1) {
+                    newState.query.Page--;
+                }
+                return newState;
+            },
+            this.fetch
+        );
+    }
+
+    onNextButtonClick = () => {
+        this.setState(
+            (prevState, prevProps) => {
+                let newState = JSON.parse(JSON.stringify(prevState));
+                let maxPage = Math.ceil(newState.response.Count / newState.query.ItemsPerPage);
+                if (newState.query.Page < maxPage) {
+                    newState.query.Page++;
+                }
+                return newState;
+            },
+            this.fetch
+        );
     }
 
     fetch = () => {

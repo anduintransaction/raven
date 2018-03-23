@@ -20,5 +20,9 @@ func NewAPIServer(config *config.AdminAPIServerConfig) servers.Server {
 	attachmentSubroute := apiSubroute.PathPrefix("/attachment").Subrouter()
 	attachmentSubroute.Path("/{id}/download").HandlerFunc(attachmentHandler.Download)
 
+	userHandler := &UserHandler{}
+	userSubroute := apiSubroute.PathPrefix("/user").Subrouter()
+	userSubroute.Path("").HandlerFunc(userHandler.Search)
+
 	return servers.NewHTTPServer(config.ListenAddress, r)
 }
