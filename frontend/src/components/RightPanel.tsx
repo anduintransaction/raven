@@ -79,9 +79,9 @@ class RightPanel extends React.Component<RightPanelProps, RightPanelState> {
                                 <FaUser />
                             </div>
                             <div className="fl w-90">
-                                <b className="f6">{email.FromName}</b>
+                                <b className="f6">{this.renderEmailAddress(email.FromEmail, email.FromName)}</b>
                                 <br />
-                                <span className="f7 mid-gray">To: {email.ToName} &lt;{email.ToEmail}&gt;</span>
+                                <span className="f7 mid-gray">To: {this.renderEmailAddress(email.ToEmail, email.ToName)}</span>
                             </div>
                         </div>
                         <div className="fl w-40 tr mid-gray f7">
@@ -94,6 +94,10 @@ class RightPanel extends React.Component<RightPanelProps, RightPanelState> {
             );
         }
         return content;
+    }
+
+    renderEmailAddress(email: string, name: string): string {
+        return name !== '' ? `${name} <${email}>` : `${email}`;
     }
 }
 

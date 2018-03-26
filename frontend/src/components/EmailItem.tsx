@@ -17,7 +17,7 @@ class EmailItem extends React.Component<EmailItemProps> {
         return (
             <div className="cl cf f6">
                 <div className="pv1">
-                    <b className="blue">{email.FromName}</b> &raquo; <b className="green f6">{email.ToName}</b>
+                    <b className="blue">{this.renderEmailAddress(email.FromEmail, email.FromName)}</b> &raquo; <b className="green f6">{this.renderEmailAddress(email.ToEmail, email.ToName)}</b>
                 </div>
                 <div className="mid-gray">
                     <div className="fl w-60 pv1 truncate">
@@ -29,6 +29,10 @@ class EmailItem extends React.Component<EmailItemProps> {
                 </div>
             </div>
         );
+    }
+
+    renderEmailAddress(email: string, name: string): string {
+        return name === '' ? email : name;
     }
 }
 
