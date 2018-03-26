@@ -25,6 +25,7 @@ import (
 	"github.com/anduintransaction/raven/api/raven/database"
 	"github.com/anduintransaction/raven/api/raven/mailgun"
 	"github.com/anduintransaction/raven/api/raven/servers"
+	"github.com/anduintransaction/raven/api/raven/smtpserver"
 	"github.com/spf13/cobra"
 )
 
@@ -92,6 +93,7 @@ func startServers(config *config.Config) {
 	servers := servers.NewServers()
 	servers.AddServer("admin", admin.NewAPIServer(config.Admin))
 	servers.AddServer("mailgun", mailgun.NewAPIServer(config.Mailgun))
+	servers.AddServer("smtp", smtpserver.NewSMTPServer(config.SMTPServer))
 	servers.ListenAndServe()
 }
 

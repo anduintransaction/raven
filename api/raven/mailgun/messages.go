@@ -61,7 +61,7 @@ func (h *MessageHandler) Send(w http.ResponseWriter, r *http.Request) {
 	database.Connection.NewRecord(message)
 	err = database.Connection.Create(message).Error
 	if err != nil {
-		logrus.Error(stacktrace.Propagate(err, "cannot create email"))
+		logrus.Error(stacktrace.Propagate(err, "cannot create message"))
 		utils.ResponseServerError(w)
 		return
 	}

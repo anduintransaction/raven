@@ -9,10 +9,11 @@ import (
 
 // Config .
 type Config struct {
-	Logging  *LoggingConfig          `yaml:"logging"`
-	Database *DatabaseConfig         `yaml:"database"`
-	Admin    *AdminAPIServerConfig   `yaml:"admin"`
-	Mailgun  *MailgunAPIServerConfig `yaml:"mailgun"`
+	Logging    *LoggingConfig          `yaml:"logging"`
+	Database   *DatabaseConfig         `yaml:"database"`
+	Admin      *AdminAPIServerConfig   `yaml:"admin"`
+	Mailgun    *MailgunAPIServerConfig `yaml:"mailgun"`
+	SMTPServer *SMTPServerConfig       `yaml:"smtp_server"`
 }
 
 // LoggingConfig .
@@ -34,6 +35,11 @@ type AdminAPIServerConfig struct {
 
 // MailgunAPIServerConfig .
 type MailgunAPIServerConfig struct {
+	ListenAddress string `yaml:"listen_address"`
+}
+
+// SMTPServerConfig .
+type SMTPServerConfig struct {
 	ListenAddress string `yaml:"listen_address"`
 }
 
