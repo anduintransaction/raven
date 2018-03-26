@@ -4,6 +4,7 @@ import { TiTimes } from 'react-icons/lib/ti';
 import IconButton from './IconButton';
 
 export interface ToolBoxProps {
+    disabled?: boolean;
     sortDirection: string;
     onSortClick?: (direction: string) => void;
     onRefreshClick?: () => void;
@@ -27,13 +28,13 @@ class ToolBox extends React.Component<ToolBoxProps, ToolBoxState> {
         let sortButton = this.state.sortDirection === 'DESC' ? <FaSortAmountDesc /> : <FaSortAmountAsc />;
         return (
             <div>
-                <IconButton text="Sort" onClick={this.onSortButtonClick}>
+                <IconButton text="Sort" onClick={this.onSortButtonClick} disabled={this.props.disabled}>
                     {sortButton}
                 </IconButton>
-                <IconButton text="Refresh" onClick={this.props.onRefreshClick}>
+                <IconButton text="Refresh" onClick={this.props.onRefreshClick} disabled={this.props.disabled}>
                     <FaRefresh />
                 </IconButton>
-                <IconButton text="Clear" onClick={this.props.onClearClick}>
+                <IconButton text="Clear" onClick={this.props.onClearClick} disabled={this.props.disabled}>
                     <TiTimes />
                 </IconButton>
             </div>

@@ -3,6 +3,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/lib/fa';
 import IconButton from './IconButton';
 
 interface PaginationBoxProps {
+    disabled?: boolean;
     page: number;
     itemsPerPage: number;
     count: number;
@@ -25,10 +26,10 @@ class PaginationBox extends React.Component<PaginationBoxProps> {
         let maxPage = Math.ceil(this.props.count / this.props.itemsPerPage);
         return (
             <div>
-                <IconButton text="Previous" disabled={this.props.page <= 1} onClick={this.props.onPreviousClick}>
+                <IconButton text="Previous" disabled={this.props.disabled || this.props.page <= 1} onClick={this.props.onPreviousClick}>
                     <FaChevronLeft />
                 </IconButton>
-                <IconButton text="Next" disabled={this.props.page >= maxPage} onClick={this.props.onNextClick}>
+                <IconButton text="Next" disabled={this.props.disabled || this.props.page >= maxPage} onClick={this.props.onNextClick}>
                     <FaChevronRight />
                 </IconButton>
                 <span className="ml3 f6">

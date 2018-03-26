@@ -5,6 +5,7 @@ import PaginationBox from './PaginationBox';
 import { MessageQuery } from '../models/Messages';
 
 interface FilterBoxProps {
+    disabled?: boolean;
     query: MessageQuery;
     count: number;
     onSearchBoxSubmit?: (search: string) => void;
@@ -44,6 +45,7 @@ class FilterBox extends React.Component<FilterBoxProps, FilterBoxState> {
                 </div>
                 <div className="fl w-20 pa3 pl0">
                     <ToolBox
+                        disabled={this.props.disabled}
                         sortDirection={sortDirection}
                         onSortClick={this.props.onSortButtonClick}
                         onRefreshClick={this.props.onRefreshButtonClick}
@@ -52,6 +54,7 @@ class FilterBox extends React.Component<FilterBoxProps, FilterBoxState> {
                 </div>
                 <div className="fl w-40 pa3 pl0">
                     <PaginationBox
+                        disabled={this.props.disabled}
                         page={this.props.query.Page}
                         itemsPerPage={this.props.query.ItemsPerPage}
                         count={this.props.count}

@@ -8,6 +8,7 @@ interface LeftPanelProps {
 }
 
 interface LeftPanelState {
+    disabled?: boolean;
     query: MessageQuery;
     response: MessagesResponse;
 }
@@ -15,6 +16,7 @@ interface LeftPanelState {
 class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
 
     initialState: LeftPanelState = {
+        disabled: false,
         query: {
             Filter: { From: '', To: '' },
             Search: '',
@@ -38,6 +40,7 @@ class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
         return (
             <div className="br b--black-30">
                 <FilterBox
+                    disabled={this.state.disabled}
                     query={this.state.query}
                     count={this.state.response.Count}
                     onSearchBoxSubmit={this.onSearchBoxSubmit}
@@ -106,6 +109,7 @@ class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
     }
 
     fetch = () => {
+        this.setState({ disabled: true });
         fetch('/api/message', {
             body: JSON.stringify(this.state.query),
             headers: {
@@ -115,7 +119,7 @@ class LeftPanel extends React.Component<LeftPanelProps, LeftPanelState> {
         }).then(function(response: Response) {
             return response.json();
         }).then((data: MessagesResponse) => {
-            this.setState({ response: data });
+            this.setState({ response: data, disabled: false });
         });
     }
 }
