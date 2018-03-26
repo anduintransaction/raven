@@ -8,16 +8,28 @@
   version = "v1.3.0"
 
 [[projects]]
-  name = "github.com/Sirupsen/logrus"
-  packages = ["."]
-  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
-  version = "v1.0.5"
-
-[[projects]]
   name = "github.com/andybalholm/cascadia"
   packages = ["."]
   revision = "901648c87902174f774fac311d7f176f8647bdaa"
   version = "v1.0.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/asaskevich/EventBus"
+  packages = ["."]
+  revision = "d46933a94f05c6657d7b923fcf5ac563ee37ec79"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/flashmob/go-guerrilla"
+  packages = [".","backends","log","mail","response"]
+  revision = "26214f560724e9a0fc7859bf0433f3b195c53871"
+
+[[projects]]
+  name = "github.com/garyburd/redigo"
+  packages = ["internal","redis"]
+  revision = "a69d19351219b6dd56f274f96d85a7014a2ec34e"
+  version = "v1.6.0"
 
 [[projects]]
   name = "github.com/go-sql-driver/mysql"
@@ -44,6 +56,18 @@
   version = "v1.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/jaytaylor/html2text"
+  packages = ["."]
+  revision = "64a82a6d140778896f13303121a49d8cb8007034"
+
+[[projects]]
+  name = "github.com/jhillyerd/enmime"
+  packages = [".","internal/coding","internal/stringutil"]
+  revision = "bed8d3f5e62dd8aca071dfe08f775f17e3647dd7"
+  version = "v0.2.0"
+
+[[projects]]
   name = "github.com/jinzhu/gorm"
   packages = [".","dialects/mysql","dialects/postgres"]
   revision = "6ed508ec6a4ecb3531899a69cbc746ccf65a4166"
@@ -62,10 +86,28 @@
   revision = "b2004221932bd6b13167ef654c81cffac36f7537"
 
 [[projects]]
+  name = "github.com/mattn/go-runewidth"
+  packages = ["."]
+  revision = "9e777a8366cce605130a531d2cd6363d07ad7317"
+  version = "v0.0.2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/olekukonko/tablewriter"
+  packages = ["."]
+  revision = "b8a9be070da40449e501c3c4730a889e42d87a9e"
+
+[[projects]]
   branch = "master"
   name = "github.com/palantir/stacktrace"
   packages = [".","cleanpath"]
   revision = "78658fd2d1772b755720ed8c44367d11ee5380d6"
+
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
 
 [[projects]]
   name = "github.com/spf13/cobra"
@@ -78,6 +120,12 @@
   packages = ["."]
   revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
   version = "v1.0.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/ssor/bom"
+  packages = ["."]
+  revision = "6386211fdfcf24c0bfbdaceafd02849ed9a8a509"
 
 [[projects]]
   branch = "master"
@@ -98,6 +146,12 @@
   revision = "01acb38716e021ed1fc03a602bdb5838e1358c5e"
 
 [[projects]]
+  name = "golang.org/x/text"
+  packages = ["encoding","encoding/charmap","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","encoding/unicode","internal/gen","internal/triegen","internal/ucd","internal/utf8internal","runes","transform","unicode/cldr","unicode/norm"]
+  revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
+  version = "v0.3.0"
+
+[[projects]]
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
@@ -106,6 +160,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "9d392a1e91fbde66acf1ee8f1a52cd9e173f395c2c7e8c37b5e27573060d4459"
+  inputs-digest = "2e5c4d21155e985cbf94e6d8a5ac1745ed09f81661e3eb0f04d21a680f38715a"
   solver-name = "gps-cdcl"
   solver-version = 1

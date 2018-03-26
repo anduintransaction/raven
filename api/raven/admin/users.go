@@ -6,11 +6,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/anduintransaction/raven/api/raven/database"
 	"github.com/anduintransaction/raven/api/raven/utils"
 	"github.com/jinzhu/gorm"
 	"github.com/palantir/stacktrace"
+	"github.com/sirupsen/logrus"
 )
 
 // UserHandler .

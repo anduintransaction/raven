@@ -3,13 +3,13 @@ package smtpserver
 import (
 	"strings"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/anduintransaction/raven/api/raven/database"
 	"github.com/anduintransaction/raven/api/raven/model"
 	"github.com/flashmob/go-guerrilla/backends"
 	"github.com/flashmob/go-guerrilla/mail"
 	"github.com/jhillyerd/enmime"
 	"github.com/palantir/stacktrace"
+	"github.com/sirupsen/logrus"
 
 	gomail "net/mail"
 )

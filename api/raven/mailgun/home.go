@@ -3,8 +3,8 @@ package mailgun
 import (
 	"net/http"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/anduintransaction/raven/api/raven/utils"
+	"github.com/sirupsen/logrus"
 )
 
 // HomeHandler .

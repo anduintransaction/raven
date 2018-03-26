@@ -19,13 +19,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/anduintransaction/raven/api/raven/admin"
 	"github.com/anduintransaction/raven/api/raven/config"
 	"github.com/anduintransaction/raven/api/raven/database"
 	"github.com/anduintransaction/raven/api/raven/mailgun"
 	"github.com/anduintransaction/raven/api/raven/servers"
 	"github.com/anduintransaction/raven/api/raven/smtpserver"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 

@@ -9,13 +9,13 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/Sirupsen/logrus"
 	"github.com/anduintransaction/raven/api/raven/database"
 	"github.com/anduintransaction/raven/api/raven/model"
 	"github.com/anduintransaction/raven/api/raven/utils"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"github.com/palantir/stacktrace"
+	"github.com/sirupsen/logrus"
 )
 
 // MessageHandler .
