@@ -24,6 +24,16 @@ class PaginationBox extends React.Component<PaginationBoxProps> {
             end = this.props.count;
         }
         let maxPage = Math.ceil(this.props.count / this.props.itemsPerPage);
+        let pageString: JSX.Element;
+        if (this.props.count > 0) {
+            pageString = (
+                <span className="ml3 f6">
+                    <strong>{start}</strong> - <strong>{end}</strong> of < strong > {this.props.count}</strong >
+                </span>
+            );
+        } else {
+            pageString = <span />;
+        }
         return (
             <div>
                 <IconButton text="Previous" disabled={this.props.disabled || this.props.page <= 1} onClick={this.props.onPreviousClick}>
@@ -33,7 +43,7 @@ class PaginationBox extends React.Component<PaginationBoxProps> {
                     <FaChevronRight />
                 </IconButton>
                 <span className="ml3 f6">
-                    <strong>{start}</strong> - <strong>{end}</strong> of <strong>{this.props.count}</strong>
+                    {pageString}
                 </span>
             </div>
         );

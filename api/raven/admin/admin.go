@@ -1,13 +1,15 @@
 package admin
 
 import (
+	"net/http"
+
 	"github.com/anduintransaction/raven/api/raven/config"
 	"github.com/anduintransaction/raven/api/raven/servers"
 	"github.com/gorilla/mux"
 )
 
 // NewAPIServer .
-func NewAPIServer(config *config.AdminAPIServerConfig) servers.Server {
+func NewAPIServer(config *config.AdminAPIServerConfig, uiData string) servers.Server {
 	r := mux.NewRouter()
 	apiSubroute := r.PathPrefix("/api").Subrouter()
 
@@ -23,6 +25,11 @@ func NewAPIServer(config *config.AdminAPIServerConfig) servers.Server {
 	userHandler := &UserHandler{}
 	userSubroute := apiSubroute.PathPrefix("/user").Subrouter()
 	userSubroute.Path("").HandlerFunc(userHandler.Search)
+
+	if uiData == "" {
+		uiData = "./frontend"
+	}
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir(uiData)))
 
 	return servers.NewHTTPServer(config.ListenAddress, r)
 }

@@ -29,6 +29,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var uiData string
+
 // runCmd represents the run command
 var runCmd = &cobra.Command{
 	Use:   "run [config file]",
@@ -91,7 +93,7 @@ func connectDatabase(databaseConfig *config.DatabaseConfig) {
 
 func startServers(config *config.Config) {
 	servers := servers.NewServers()
-	servers.AddServer("admin", admin.NewAPIServer(config.Admin))
+	servers.AddServer("admin", admin.NewAPIServer(config.Admin, uiData))
 	servers.AddServer("mailgun", mailgun.NewAPIServer(config.Mailgun))
 	servers.AddServer("smtp", smtpserver.NewSMTPServer(config.SMTPServer))
 	servers.ListenAndServe()
@@ -99,4 +101,5 @@ func startServers(config *config.Config) {
 
 func init() {
 	RootCmd.AddCommand(runCmd)
+	runCmd.Flags().StringVar(&uiData, "ui-data", "", "frontend folder")
 }

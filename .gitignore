@@ -75,3 +75,4 @@ Temporary Items
 # Application
 api/raven/raven
 /local
+/dist
