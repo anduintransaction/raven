@@ -62,10 +62,10 @@ clean: .clean-api .clean-frontend .clean-dist
 	cp -rf README.md LICENSE config.sample.yml $(current_dir)/$(DIST)/raven
 
 .dist-gzip-mac:
-	cd $(current_dir)/$(DIST) && tar czf raven-$(OS_MAC)-$(ARCH_MAC)-`../$(RAVEN) version`.tar.gz raven
+	cd $(current_dir)/$(DIST) && tar czf raven-$(OS_MAC)-$(ARCH_MAC)-v`../$(RAVEN) version`.tar.gz raven
 
 .dist-gzip-linux:
-	cd $(current_dir)/$(DIST) && tar czf raven-$(OS_LINUX)-$(ARCH_LINUX)-`../$(RAVEN) version`.tar.gz raven
+	cd $(current_dir)/$(DIST) && tar czf raven-$(OS_LINUX)-$(ARCH_LINUX)-v`../$(RAVEN) version`.tar.gz raven
 
 .dist-post:
 	rm -rf $(DIST)/raven

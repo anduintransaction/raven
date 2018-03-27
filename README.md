@@ -21,4 +21,4 @@ Download latest release from [release page](https://github.com/anduintransaction
  
  ### Docker
  
- - `docker run anduin/raven:1.0.0`
+ - `docker run -e POSTGRES_HOST=local -e POSTGRES_USER=your-username -e POSTGRES_PASSWORD=your-password -e POSTGRES_DB=your-db anduin/raven:1.0.0`

@@ -2,6 +2,7 @@ package config
 
 import (
 	"io/ioutil"
+	"os"
 
 	"github.com/palantir/stacktrace"
 	"gopkg.in/yaml.v2"
@@ -49,8 +50,9 @@ func ParseConfig(configFile string) (*Config, error) {
 	if err != nil {
 		return nil, stacktrace.Propagate(err, "cannot read config file %q", configFile)
 	}
+	contentStr := os.ExpandEnv(string(content))
 	config := &Config{}
-	err = yaml.Unmarshal(content, config)
+	err = yaml.Unmarshal([]byte(contentStr), config)
 	if err != nil {
 		return nil, stacktrace.Propagate(err, "cannot parse config file %q", configFile)
 	}
